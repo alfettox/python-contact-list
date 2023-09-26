@@ -4,11 +4,14 @@ from typing import List
 import json
 from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+
 
 # Configure CORS policies
 origins = [
-    "http://localhost",      # Allow requests from http://localhost
-    "http://localhost:3000", # Allow requests from http://localhost:3000
+    "http://localhost",     
+    "http://localhost:3000",
+    "http://localhost:8000",
 ]
 
 app.add_middleware(
@@ -59,3 +62,8 @@ async def view_contacts():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+@app.get("/test")
+async def test_endpoint():
+    return {"message": "This is a test response from FastAPI"}
+
