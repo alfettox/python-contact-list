@@ -7,22 +7,36 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 
-# Configure CORS policies
-origins = [
-    "http://localhost",     
-    "http://localhost:3000",
-    "http://localhost:8000",
-]
+# Configure CORS settings
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],    # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],    # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
+
+
 app = FastAPI()
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Define CORS settings
+origins = ["*"]  # Replace "*" with your allowed origins as needed
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # You can specify specific HTTP methods if needed
+    allow_headers=["Content-Type"],
+)
 
 class Contact(BaseModel):
     name: str
@@ -36,7 +50,7 @@ def load_contacts():
         return []
 
 def save_contacts(contacts):
-    with open("./data/contacts.json", "w") as file:  # Corrected file path
+    with open("./data/contacts.json", "w") as file:
         json.dump(contacts, file, indent=4)
 
 @app.post("/add_contact")
@@ -55,7 +69,7 @@ async def remove_contact(name: str = Query(..., title="Contact to be removed")):
     save_contacts(new_contacts)
     return {"message": "Contact removed"}
 
-@app.get("/view_contacts")  # Corrected route path
+@app.get("/") 
 async def view_contacts():
     return load_contacts()
 
